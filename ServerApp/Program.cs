@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using Okta.AspNetCore;
 using ServerApp.Services;
 
@@ -10,10 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+    
+
 })
 .AddCookie()
 .AddOktaMvc(new OktaMvcOptions
@@ -22,8 +27,19 @@ builder.Services.AddAuthentication(options =>
     ClientId = builder.Configuration["Okta:ClientId"],
     ClientSecret = builder.Configuration["Okta:ClientSecret"],
     AuthorizationServerId = builder.Configuration["Okta:AuthorizationServerId"],
-    
+    Scope = new List<string> { "openid", "profile", "email", "groups" },
+
+
 });
+builder.Services.Configure<OpenIdConnectOptions>(OktaDefaults.MvcAuthenticationScheme, options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        RoleClaimType = "groups"
+    };
+});
+
+builder.Services.AddScoped<AccessTokenService>();
 
 builder.Services.AddHttpClient("ApiClient", client =>
 {
@@ -31,7 +47,7 @@ builder.Services.AddHttpClient("ApiClient", client =>
 })
 .AddHttpMessageHandler<AccessTokenService>();
 
-builder.Services.AddTransient<AccessTokenService>();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 

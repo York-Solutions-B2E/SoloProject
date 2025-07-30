@@ -12,6 +12,7 @@ namespace ServerApp.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                
                 return LocalRedirect(returnUrl ?? Url.Content("~/"));
             }
 

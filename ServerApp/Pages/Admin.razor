@@ -1,7 +1,7 @@
 @page "/admin"
 @attribute [Authorize(Roles = "Admin")]
 
-<AuthorizeView>
+<AuthorizeView Roles="Admin">
     <Authorized>
         <h3>Admin Panel</h3>
         <!-- Your admin content -->
