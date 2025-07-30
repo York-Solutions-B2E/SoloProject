@@ -1,0 +1,14 @@
+
+@page "/user"
+
+@attribute [Authorize(Roles = "Users")]
+
+<AuthorizeView>
+    <Authorized>
+        <h3>Admin Panel</h3>
+        <!-- Your admin content -->
+    </Authorized>
+    <NotAuthorized>
+        <p>You are not authorized to view this page.</p>
+    </NotAuthorized>
+</AuthorizeView>

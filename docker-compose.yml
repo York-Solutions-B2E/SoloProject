@@ -1,0 +1,54 @@
+
+services:
+  serverapp:
+    build:
+      context: ./ServerApp
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+      - "5003:443"
+    environment:
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=yourpassword
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=443
+      - DOTNET_USE_POLLING_FILE_WATCHER=true
+      - Okta__OktaDomain=${OKTA_DOMAIN}
+      - Okta__ClientId=${OKTA_CLIENT_ID}
+      - Okta__ClientSecret=${OKTA_CLIENT_SECRET}
+      - Okta__AuthorizationServerId=${OKTA_AUTHORIZATION_SERVER_ID}
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    depends_on:
+      - webapi
+
+  webapi:
+    build:
+      context: ./WebApi
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+      - "5004:443"
+    environment:
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=yourpassword
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=443
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    depends_on:
+      - sqlserver
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+
+  #rabbitmq:
+    #image: rabbitmq:3-management
+    #ports:
+     # - "5672:5672"     # For apps
+     # - "15672:15672"   # For browser-based management UI
