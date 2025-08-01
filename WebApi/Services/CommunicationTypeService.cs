@@ -42,6 +42,19 @@ public class CommunicationTypeService : ICommunicationTypeService
             DisplayName = dto.DisplayName
         };
     }
+    public async Task<bool> UpdateAsync(CommunicationTypeDto dto)
+    {
+        var entity = await _db.CommunicationTypes
+            .FirstOrDefaultAsync(c => c.TypeCode == dto.TypeCode);
+
+        if (entity == null)
+            return false;
+
+        entity.DisplayName = dto.DisplayName;
+
+        await _db.SaveChangesAsync();
+        return true;
+    }
 
     public async Task<bool> DeleteAsync(string typeCode)
     {

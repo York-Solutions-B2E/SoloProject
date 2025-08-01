@@ -33,6 +33,17 @@ namespace WebApi.Controllers
             var created = await _communicationTypeService.CreateAsync(type);
             return Ok(created);
         }
+        [HttpPut("{typeCode}")]
+        public async Task<ActionResult> Update(string typeCode, CommunicationTypeDto updatedType)
+        {
+            if (typeCode != updatedType.TypeCode)
+            {
+            return BadRequest("Type code in URL and body do not match.");
+            }
+
+            var success = await _communicationTypeService.UpdateAsync(updatedType);
+            return success ? NoContent() : NotFound();
+        }
 
         [HttpDelete("{typeCode}")]
         public async Task<IActionResult> Delete(string typeCode)

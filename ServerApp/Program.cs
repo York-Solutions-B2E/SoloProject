@@ -55,6 +55,7 @@ builder.Services.AddHttpClient("ApiClient", client =>
 builder.Services.AddScoped<ReadCommunicationService>();
 
 builder.Services.AddScoped<AccessTokenService>();
+builder.Services.AddScoped<CRUDCommunicationTypeService>();
 
 builder.Services.AddHttpContextAccessor();
 

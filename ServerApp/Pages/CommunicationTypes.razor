@@ -1,0 +1,122 @@
+@page "/admin/communication-types"
+@using global::App.Shared.Dtos
+@using ServerApp.Services
+@inject CRUDCommunicationTypeService TypeService
+
+<h3>Manage Communication Types</h3>
+
+@if (types == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Type Code</th>
+            <th>Display Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in types)
+        {
+            <tr>
+                @if (editType != null && editType.TypeCode == t.TypeCode)
+                {
+                    <td><input @bind="editType.TypeCode" class="form-control" /></td>
+                    <td><input @bind="editType.DisplayName" class="form-control" /></td>
+                    <td>
+                        <button class="btn btn-sm btn-success" @onclick="SaveEdit">Save</button>
+                        <button class="btn btn-sm btn-secondary" @onclick="CancelEdit">Cancel</button>
+                    </td>
+                }
+                else
+                {
+                    <td>@t.TypeCode</td>
+                    <td>@t.DisplayName</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" @onclick="() => StartEdit(t)">Edit</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteType(t.TypeCode)">Delete</button>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+<h4>Add New</h4>
+<input placeholder="Type Code" @bind="newType.TypeCode" class="form-control" />
+<input placeholder="Display Name" @bind="newType.DisplayName" class="form-control" />
+<button class="btn btn-primary mt-2" @onclick="AddType">Add</button>
+
+@code {
+    private List<CommunicationTypeDto>? types;
+    private CommunicationTypeDto newType = new CommunicationTypeDto
+
+    
+{
+    TypeCode = string.Empty,
+    DisplayName = string.Empty
+};
+    private CommunicationTypeDto? editType;
+    protected override async Task OnInitializedAsync()
+    {
+        types = await TypeService.GetAllAsync();
+    }
+
+    private async Task AddType()
+    {
+        if (await TypeService.CreateAsync(newType))
+        {
+            newType = new CommunicationTypeDto
+            {
+                TypeCode = "",
+                DisplayName = ""
+            }; // reset
+            types = await TypeService.GetAllAsync();
+        }
+    }
+
+    private void StartEdit(CommunicationTypeDto type)
+    {
+        // Clone the object so editing is isolated until saved
+        editType = new CommunicationTypeDto
+        {
+        TypeCode = type.TypeCode,
+        DisplayName = type.DisplayName
+        };
+    }
+
+    private async Task SaveEdit()
+    {
+        if (editType is not null)
+        {
+            bool success = await TypeService.UpdateAsync(editType);
+            if (success)
+            {
+                types = await TypeService.GetAllAsync();
+                editType = null; // exit editing mode
+            }
+            else
+            {
+            // handle failure, e.g. show a message
+            }
+        }
+    }
+
+    private void CancelEdit()
+    {
+    editType = null; // discard changes and exit editing mode
+    }
+
+    private async Task DeleteType(string typeCode)
+    {
+        if (await TypeService.DeleteAsync(typeCode))
+        {
+            types = await TypeService.GetAllAsync();
+        }
+    }
+}
