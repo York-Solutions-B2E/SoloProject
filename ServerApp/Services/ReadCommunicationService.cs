@@ -1,4 +1,4 @@
-using Shared;
+using App.Shared.Dtos;
 
 namespace ServerApp.Services
 {
@@ -8,13 +8,16 @@ namespace ServerApp.Services
 
     public ReadCommunicationService(IHttpClientFactory factory)
     {
-        _client = factory.CreateClient("ApiClient");
+        _client = factory.CreateClient("ApiClient"); // must match exactly the name used in AddHttpClient
     }
 
     public async Task<List<CommunicationDto>> GetCommunicationsAsync()
     {
-        return await _client.GetFromJsonAsync<List<CommunicationDto>>("/api/Communications");
+        Console.WriteLine("Calling API with access token...");  // add this to see if this is called
+        return await _client.GetFromJsonAsync<List<CommunicationDto>>("/api/communications");
     }
 }
+
+
 
 }

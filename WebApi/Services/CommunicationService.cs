@@ -1,8 +1,8 @@
-using WebApi.Dtos;
+using App.Shared.Dtos;
 using WebApi.Entities;
 using Microsoft.EntityFrameworkCore;
 using WebApi.CommunicationDbContext;
-using Shared;
+
 
 namespace WebApi.Services {
 

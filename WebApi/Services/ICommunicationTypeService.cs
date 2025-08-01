@@ -1,5 +1,5 @@
 // Services/ICommunicationTypeService.cs
-using WebApi.Dtos;
+using App.Shared.Dtos;
 
 public interface ICommunicationTypeService
 {

@@ -45,7 +45,6 @@ builder.Services.Configure<OpenIdConnectOptions>(OktaDefaults.MvcAuthenticationS
     };
 });
 
-builder.Services.AddScoped<AccessTokenService>();
 
 builder.Services.AddHttpClient("ApiClient", client =>
 {
@@ -53,7 +52,9 @@ builder.Services.AddHttpClient("ApiClient", client =>
     client.BaseAddress = new Uri("http://webapi"); 
 })
 .AddHttpMessageHandler<AccessTokenService>();
+builder.Services.AddScoped<ReadCommunicationService>();
 
+builder.Services.AddScoped<AccessTokenService>();
 
 builder.Services.AddHttpContextAccessor();
 

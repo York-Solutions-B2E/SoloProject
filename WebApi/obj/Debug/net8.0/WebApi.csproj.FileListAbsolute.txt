@@ -1,3 +1,12 @@
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.csproj.AssemblyReference.cache
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/rpswa.dswa.cache.json
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.GeneratedMSBuildEditorConfig.editorconfig
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.AssemblyInfoInputs.cache
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.AssemblyInfo.cs
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.csproj.CoreCompileInputs.cache
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.MvcApplicationPartsAssemblyInfo.cs
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.MvcApplicationPartsAssemblyInfo.cache
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.sourcelink.json
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/bin/Debug/net8.0/appsettings.Development.json
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/bin/Debug/net8.0/appsettings.json
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/bin/Debug/net8.0/WebApi.staticwebassets.endpoints.json
@@ -116,15 +125,8 @@
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/bin/Debug/net8.0/runtimes/win/lib/net6.0/System.Runtime.Caching.dll
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/bin/Debug/net8.0/runtimes/win/lib/net6.0/System.Security.Cryptography.ProtectedData.dll
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/bin/Debug/net8.0/runtimes/win/lib/net6.0/System.Windows.Extensions.dll
-/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.csproj.AssemblyReference.cache
-/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/rpswa.dswa.cache.json
-/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.GeneratedMSBuildEditorConfig.editorconfig
-/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.AssemblyInfoInputs.cache
-/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.AssemblyInfo.cs
-/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.csproj.CoreCompileInputs.cache
-/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.MvcApplicationPartsAssemblyInfo.cs
-/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.MvcApplicationPartsAssemblyInfo.cache
-/Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.sourcelink.json
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/bin/Debug/net8.0/App.Shared.dll
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/bin/Debug/net8.0/App.Shared.pdb
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/rjimswa.dswa.cache.json
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/rjsmrazor.dswa.cache.json
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/rjsmcshtml.dswa.cache.json
@@ -139,5 +141,3 @@
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.pdb
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.genruntimeconfig.cache
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/ref/WebApi.dll
-/Users/yorkmacbook017/Desktop/SoloProject/WebApi/bin/Debug/net8.0/Shared.dll
-/Users/yorkmacbook017/Desktop/SoloProject/WebApi/bin/Debug/net8.0/Shared.pdb

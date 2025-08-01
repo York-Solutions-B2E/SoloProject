@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.CommunicationDbContext;
-using WebApi.Dtos;
+using App.Shared.Dtos;
 using WebApi.Entities;
 
 namespace WebApi.Controllers

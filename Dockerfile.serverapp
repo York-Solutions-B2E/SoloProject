@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY ServerApp/*.csproj ServerApp/
-COPY Shared/*.csproj Shared/
+COPY App.Shared/*.csproj App.Shared/
 # (add ApiApp if needed similarly)
 
 RUN dotnet restore ServerApp/ServerApp.csproj

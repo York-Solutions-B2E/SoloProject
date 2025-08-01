@@ -1,0 +1,57 @@
+@page "/communications"
+@using global::App.Shared.Dtos
+@inject ServerApp.Services.ReadCommunicationService CommunicationService
+@inject NavigationManager NavigationManager
+
+<h3>Communications List</h3>
+
+@if (communications == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (communications.Count == 0)
+{
+    <p>No communications found.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Current Status</th>
+                <th>Last Updated</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var comm in communications)
+            {
+                <tr>
+                    <td>@comm.Title</td>
+                    <td>@comm.TypeCode</td>
+                    <td>@comm.CurrentStatus</td>
+                    <td>@comm.LastUpdatedUtc.ToLocalTime().ToString("g")</td>
+                    <td>
+                        <button class="btn btn-link" @onclick="() => ViewDetails(comm.Id)">View Details</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<CommunicationDto>? communications;
+
+    protected override async Task OnInitializedAsync()
+    {
+        communications = await CommunicationService.GetCommunicationsAsync();
+    }
+
+    private void ViewDetails(Guid id)
+    {
+        NavigationManager.NavigateTo($"/communications/{id}");
+    }
+}

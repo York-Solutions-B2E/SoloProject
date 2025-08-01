@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebApi.CommunicationDbContext;
-using Shared;
-using WebApi.Entities;
 using WebApi.Services;
-using WebApi.Dtos;
+using App.Shared.Dtos;
 
 namespace WebApi.Controllers
 {
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
 

@@ -1,6 +1,4 @@
-using Shared;
-using WebApi.Dtos;
-
+using App.Shared.Dtos;
 namespace WebApi.Services
 {
     public interface ICommunicationService

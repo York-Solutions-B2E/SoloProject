@@ -38,7 +38,7 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         NameClaimType = "name",
-        RoleClaimType = "groups"  // Important if you're using group-based roles
+        RoleClaimType = "Roles"  // Important if you're using group-based roles
     };
 });
 builder.Services.AddAuthorization();
@@ -59,7 +59,7 @@ if (app.Environment.IsDevelopment())
     
 }
 app.UseCors("AllowSpecificOrigins");
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

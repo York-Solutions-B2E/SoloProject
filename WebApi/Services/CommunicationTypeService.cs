@@ -1,7 +1,7 @@
 // Services/CommunicationTypeService.cs
 using Microsoft.EntityFrameworkCore;
 using WebApi.CommunicationDbContext;
-using WebApi.Dtos;
+using App.Shared.Dtos;
 using WebApi.Entities;
 
 public class CommunicationTypeService : ICommunicationTypeService

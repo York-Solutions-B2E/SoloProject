@@ -1,0 +1,10 @@
+namespace App.Shared.Dtos
+{
+    public class CommunicationStatusHistoryDto
+    {
+        public Guid Id { get; set; }
+        public required string StatusCode { get; set; }
+        public DateTime OccurredUtc { get; set; }
+    }
+
+}
