@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY ServerApp/*.csproj ServerApp/
+COPY Shared/*.csproj Shared/
+# (add ApiApp if needed similarly)
+
+RUN dotnet restore ServerApp/ServerApp.csproj
+
+COPY . .
+
+RUN dotnet publish ServerApp/ServerApp.csproj -c Release -o /app/out
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build /app/out .
+
+ENTRYPOINT ["dotnet", "ServerApp.dll"]

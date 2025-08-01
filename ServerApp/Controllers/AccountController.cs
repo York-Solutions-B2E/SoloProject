@@ -5,6 +5,7 @@ using Okta.AspNetCore;
 
 namespace ServerApp.Controllers
 {
+    //for signin/out redirection
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {

@@ -9,7 +9,7 @@ namespace WebApi.Entities
         public DateTime LastUpdatedUtc { get; set; }
 
         //
-        public required CommunicationType CommunicationType { get; set; }
+        public CommunicationType? CommunicationType { get; set; }
         public List<CommunicationStatusHistory> StatusHistory { get; set; } = [];
     }
 }

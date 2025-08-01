@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY WebApi/*.csproj WebApi/
+COPY Shared/*.csproj Shared/
+# (add ApiApp if needed similarly)
+
+RUN dotnet restore WebApi/WebApi.csproj
+
+COPY . .
+
+RUN dotnet publish WebApi/WebApi.csproj -c Release -o /app/out
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build /app/out .
+
+ENTRYPOINT ["dotnet", "WebApi.dll"]

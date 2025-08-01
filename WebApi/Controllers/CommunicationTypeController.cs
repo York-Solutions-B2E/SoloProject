@@ -2,48 +2,44 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.CommunicationDbContext;
+using WebApi.Dtos;
 using WebApi.Entities;
 
 namespace WebApi.Controllers
 {
-[Authorize(Roles = "Admin")] // Only admins
-[ApiController]
-[Route("api/[controller]")]
 
-public class CommunicationTypeController : ControllerBase
-{
-    private readonly AppDbContext _CommunicationDbContext;
-
-    public CommunicationTypeController(AppDbContext appDbContext)
+    [Authorize(Roles = "Admin")] // Only admins
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CommunicationTypeController : ControllerBase
     {
-        _CommunicationDbContext = appDbContext;
-    }
+        private readonly ICommunicationTypeService _communicationTypeService;
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<CommunicationType>>> GetAll()
-    {
-        return await _CommunicationDbContext.CommunicationTypes
-            .Include(t => t.Statuses)
-            .ToListAsync();
-    }
+        public CommunicationTypeController(ICommunicationTypeService service)
+        {
+            _communicationTypeService = service;
+        }
 
-    [HttpPost]
-    public async Task<ActionResult> Create(CommunicationType type)
-    {
-        _CommunicationDbContext.CommunicationTypes.Add(type);
-        await _CommunicationDbContext.SaveChangesAsync();
-        return Ok(type);
-    }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CommunicationTypeDto>>> GetAll()
+        {
+            var types = await _communicationTypeService.GetAllAsync();
+            return Ok(types);
+        }
 
-    [HttpDelete("{typeCode}")]
-    public async Task<IActionResult> Delete(string typeCode)
-    {
-        var type = await _CommunicationDbContext.CommunicationTypes.FindAsync(typeCode);
-        if (type is null) return NotFound();
-        _CommunicationDbContext.CommunicationTypes.Remove(type);
-        await _CommunicationDbContext.SaveChangesAsync();
-        return NoContent();
+        [HttpPost]
+        public async Task<ActionResult> Create(CommunicationTypeDto type)
+        {
+            var created = await _communicationTypeService.CreateAsync(type);
+            return Ok(created);
+        }
+
+        [HttpDelete("{typeCode}")]
+        public async Task<IActionResult> Delete(string typeCode)
+        {
+            var success = await _communicationTypeService.DeleteAsync(typeCode);
+            return success ? NoContent() : NotFound();
+        }
     }
-}
 
 }

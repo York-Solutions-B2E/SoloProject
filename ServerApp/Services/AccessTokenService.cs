@@ -4,6 +4,7 @@ namespace ServerApp.Services
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
+ //server communicates with API
 public class AccessTokenService : DelegatingHandler
 {
     private readonly IHttpContextAccessor _httpContextAccessor;

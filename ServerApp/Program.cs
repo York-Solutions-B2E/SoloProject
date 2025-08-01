@@ -17,7 +17,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-    
+
 
 })
 .AddCookie()
@@ -27,10 +27,16 @@ builder.Services.AddAuthentication(options =>
     ClientId = builder.Configuration["Okta:ClientId"],
     ClientSecret = builder.Configuration["Okta:ClientSecret"],
     AuthorizationServerId = builder.Configuration["Okta:AuthorizationServerId"],
+    //to find groups role
     Scope = new List<string> { "openid", "profile", "email", "groups" },
 
 
 });
+
+/*
+Configure Token validation Parameters
+to accept groups in role based authorization.
+*/
 builder.Services.Configure<OpenIdConnectOptions>(OktaDefaults.MvcAuthenticationScheme, options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -43,12 +49,15 @@ builder.Services.AddScoped<AccessTokenService>();
 
 builder.Services.AddHttpClient("ApiClient", client =>
 {
-    client.BaseAddress = new Uri("http://webapi:5001"); // Docker Compose name
+    //Docker Compose name
+    client.BaseAddress = new Uri("http://webapi"); 
 })
 .AddHttpMessageHandler<AccessTokenService>();
 
 
 builder.Services.AddHttpContextAccessor();
+
+//add login controller
 builder.Services.AddControllers();
 
 
@@ -68,8 +77,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication(); 
+
+//Sign on/roles Auth
+app.UseAuthentication();
 app.UseAuthorization();
+
+//mapping login controller
 app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

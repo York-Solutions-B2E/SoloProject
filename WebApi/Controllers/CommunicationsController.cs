@@ -2,52 +2,49 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.CommunicationDbContext;
+using Shared;
 using WebApi.Entities;
+using WebApi.Services;
+using WebApi.Dtos;
 
 namespace WebApi.Controllers
 {
     [Authorize(Roles = "User")]
     [ApiController]
     [Route("api/[controller]")]
+
     public class CommunicationsController : ControllerBase
     {
-        private readonly AppDbContext _CommunicationDbContext;
+        private readonly ICommunicationService _communicationService;
 
-        public CommunicationsController(AppDbContext appDbContext)
+        public CommunicationsController(ICommunicationService communicationService)
         {
-            _CommunicationDbContext = appDbContext;
-
+            _communicationService = communicationService;
         }
-        //communications page load all info
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Communication>>> GetAll()
+        public async Task<ActionResult<IEnumerable<CommunicationDto>>> GetAll()
         {
-            return await _CommunicationDbContext.Communications
-                .Include(c => c.CommunicationType)
-                .Include(c => c.StatusHistory)
-                .ToListAsync();
+            var comms = await _communicationService.GetAllCommunicationsAsync();
+            return Ok(comms);
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<Communication>> GetById(Guid id)
+        public async Task<ActionResult<CommunicationDto>> GetById(Guid id)
         {
-            var comm = await _CommunicationDbContext.Communications
-                .Include(c => c.CommunicationType)
-                .Include(c => c.StatusHistory.OrderBy(h => h.OccurredUtc))
-                .FirstOrDefaultAsync(c => c.Id == id);
+            var comm = await _communicationService.GetCommunicationAsync(id);
 
-            return comm is null ? NotFound() : Ok(comm);
+            if (comm is null)
+                return NotFound();
+
+            return Ok(comm);
         }
+
         [HttpPost]
-        public async Task<ActionResult> Create(Communication comm)
+        public async Task<ActionResult> Create(CreateCommunicationDto dto)
         {
-            comm.LastUpdatedUtc = DateTime.UtcNow;
-            _CommunicationDbContext.Communications.Add(comm);
-            await _CommunicationDbContext.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = comm.Id }, comm);
+            var id = await _communicationService.CreateCommunicationAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id }, null);
         }
-
-        
-
     }
 }

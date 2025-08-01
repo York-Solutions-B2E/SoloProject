@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "zSiDu5CN21U=",
+  "dgSpecHash": "WrkXpmuzdik=",
   "success": true,
   "projectFilePath": "/Users/yorkmacbook017/Desktop/SoloProject/ServerApp/ServerApp.csproj",
   "expectedPackageFiles": [
@@ -22,6 +22,7 @@
     "/Users/yorkmacbook017/.nuget/packages/system.globalization/4.3.0/system.globalization.4.3.0.nupkg.sha512",
     "/Users/yorkmacbook017/.nuget/packages/system.identitymodel.tokens.jwt/8.2.0/system.identitymodel.tokens.jwt.8.2.0.nupkg.sha512",
     "/Users/yorkmacbook017/.nuget/packages/system.io/4.3.0/system.io.4.3.0.nupkg.sha512",
+    "/Users/yorkmacbook017/.nuget/packages/system.io.pipelines/9.0.3/system.io.pipelines.9.0.3.nupkg.sha512",
     "/Users/yorkmacbook017/.nuget/packages/system.reflection/4.3.0/system.reflection.4.3.0.nupkg.sha512",
     "/Users/yorkmacbook017/.nuget/packages/system.reflection.extensions/4.3.0/system.reflection.extensions.4.3.0.nupkg.sha512",
     "/Users/yorkmacbook017/.nuget/packages/system.reflection.primitives/4.3.0/system.reflection.primitives.4.3.0.nupkg.sha512",
@@ -31,6 +32,7 @@
     "/Users/yorkmacbook017/.nuget/packages/system.runtime.interopservices/4.3.0/system.runtime.interopservices.4.3.0.nupkg.sha512",
     "/Users/yorkmacbook017/.nuget/packages/system.runtime.interopservices.runtimeinformation/4.3.0/system.runtime.interopservices.runtimeinformation.4.3.0.nupkg.sha512",
     "/Users/yorkmacbook017/.nuget/packages/system.text.encoding/4.3.0/system.text.encoding.4.3.0.nupkg.sha512",
+    "/Users/yorkmacbook017/.nuget/packages/system.text.encodings.web/9.0.3/system.text.encodings.web.9.0.3.nupkg.sha512",
     "/Users/yorkmacbook017/.nuget/packages/system.text.json/9.0.3/system.text.json.9.0.3.nupkg.sha512",
     "/Users/yorkmacbook017/.nuget/packages/system.threading/4.3.0/system.threading.4.3.0.nupkg.sha512",
     "/Users/yorkmacbook017/.nuget/packages/system.threading.tasks/4.3.0/system.threading.tasks.4.3.0.nupkg.sha512"
