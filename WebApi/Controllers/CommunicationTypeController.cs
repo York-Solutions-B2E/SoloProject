@@ -8,7 +8,7 @@ using WebApi.Entities;
 namespace WebApi.Controllers
 {
 
-    [Authorize(Roles = "Admin")] // Only admins
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CommunicationTypeController : ControllerBase
@@ -33,16 +33,12 @@ namespace WebApi.Controllers
             var created = await _communicationTypeService.CreateAsync(type);
             return Ok(created);
         }
-        [HttpPut("{typeCode}")]
-        public async Task<ActionResult> Update(string typeCode, CommunicationTypeDto updatedType)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] CommunicationTypeDto dto)
         {
-            if (typeCode != updatedType.TypeCode)
-            {
-            return BadRequest("Type code in URL and body do not match.");
-            }
-
-            var success = await _communicationTypeService.UpdateAsync(updatedType);
-            return success ? NoContent() : NotFound();
+            var updated = await _communicationTypeService.UpdateAsync(dto);
+            if (!updated) return NotFound();
+            return NoContent();
         }
 
         [HttpDelete("{typeCode}")]
@@ -50,6 +46,19 @@ namespace WebApi.Controllers
         {
             var success = await _communicationTypeService.DeleteAsync(typeCode);
             return success ? NoContent() : NotFound();
+        }
+        [HttpGet("{typeCode}/statuses")]
+        public async Task<ActionResult<List<CommunicationTypeStatusDto>>> GetStatusesForType(string typeCode)
+        {
+            var statuses = await _communicationTypeService.GetStatusesForTypeAsync(typeCode);
+            return Ok(statuses);
+        }
+
+        [HttpPut("{typeCode}/statuses")]
+        public async Task<IActionResult> UpdateStatuses(string typeCode, List<CommunicationTypeStatusDto> statuses)
+        {
+            await _communicationTypeService.UpdateStatusesAsync(typeCode, statuses);
+            return NoContent();
         }
     }
 

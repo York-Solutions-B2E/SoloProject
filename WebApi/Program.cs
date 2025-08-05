@@ -41,7 +41,6 @@ builder.Services.AddAuthentication(options =>
         RoleClaimType = "Roles"  // Important if you're using group-based roles
     };
 });
-builder.Services.AddAuthorization();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();

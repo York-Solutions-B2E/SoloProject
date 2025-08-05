@@ -36,6 +36,19 @@ namespace ServerApp.Services
             var response = await _http.DeleteAsync($"api/communicationtype/{typeCode}");
             return response.IsSuccessStatusCode;
         }
+        
+        public async Task<List<CommunicationTypeStatusDto>> GetStatusesForTypeAsync(string typeCode)
+        {
+            return await _http.GetFromJsonAsync<List<CommunicationTypeStatusDto>>($"api/communicationtype/{typeCode}/statuses")
+                ?? new List<CommunicationTypeStatusDto>();
+        }
+
+        public async Task<bool> UpdateStatusesAsync(string typeCode, List<CommunicationTypeStatusDto> statuses)
+        {
+            var response = await _http.PutAsJsonAsync($"api/communicationtype/{typeCode}/statuses", statuses);
+            return response.IsSuccessStatusCode;
+        }
+
     }
 
 }

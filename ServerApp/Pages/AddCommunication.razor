@@ -1,0 +1,91 @@
+@page "/communicationAdd"
+@using ServerApp.Services
+@using global::App.Shared.Dtos
+@inject CreateReadCommunicationService CommunicationService
+@inject CRUDCommunicationTypeService CommunicationTypeService
+
+<EditForm Model="@newCommunication" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="title">Title</label>
+        <InputText id="title" class="form-control" @bind-Value="newCommunication.Title" />
+    </div>
+
+    <div class="mb-3">
+        <label for="typeCode">Communication Type</label>
+        <InputSelect id="typeCode" class="form-control" @bind-Value="newCommunication.TypeCode">
+            <option value="">Select a type</option>
+            @foreach (var type in communicationTypes)
+            {
+                <option value="@type.TypeCode">@type.DisplayName</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="mb-3">
+        <label for="initialStatusCode">Initial Status Code</label>
+        <InputText id="initialStatusCode" class="form-control" @bind-Value="newCommunication.InitialStatusCode" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" disabled="@isSubmitting">Add Communication</button>
+</EditForm>
+
+@if (successMessage != null)
+{
+    <div class="alert alert-success mt-2">@successMessage</div>
+}
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger mt-2">@errorMessage</div>
+}
+
+@code {
+    private CreateCommunicationDto newCommunication = new()
+    {
+        Title = "",
+        TypeCode = "",
+        InitialStatusCode = "" // or some default initial status code string
+    };
+    private List<CommunicationTypeDto> communicationTypes = new();
+    private bool isSubmitting = false;
+    private string? successMessage;
+    private string? errorMessage;
+
+    [Parameter]
+    public EventCallback OnCommunicationAdded { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Use the service that fetches communication types
+        communicationTypes = await CommunicationTypeService.GetAllAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        isSubmitting = true;
+        successMessage = null;
+        errorMessage = null;
+
+        bool result = await CommunicationService.CreateCommunicationAsync(newCommunication);
+        if (result)
+        {
+            successMessage = "Communication added successfully!";
+            newCommunication = new CreateCommunicationDto
+            {
+                Title = "",
+                TypeCode = "",
+                InitialStatusCode = ""
+            }; // reset form
+            await OnCommunicationAdded.InvokeAsync();
+        }
+        else
+        {
+            errorMessage = "Failed to add communication. Please try again.";
+        }
+
+        isSubmitting = false;
+    }
+}

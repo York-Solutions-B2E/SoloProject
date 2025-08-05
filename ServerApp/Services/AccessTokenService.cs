@@ -19,8 +19,11 @@ namespace ServerApp.Services
         {
             var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
 
+
             if (!string.IsNullOrEmpty(accessToken))
             {
+
+                
 
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             }

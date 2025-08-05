@@ -5,7 +5,7 @@ using App.Shared.Dtos;
 
 namespace WebApi.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
 
@@ -19,9 +19,10 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CommunicationDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<CommunicationDto>>> GetAll([FromQuery] int pageNumber = 1, 
+    [FromQuery] int pageSize = 10)
         {
-            var comms = await _communicationService.GetAllCommunicationsAsync();
+            var comms = await _communicationService.GetPaginatedCommunicationsAsync(pageNumber, pageSize);
             return Ok(comms);
         }
 

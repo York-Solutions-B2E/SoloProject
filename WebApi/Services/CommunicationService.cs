@@ -30,7 +30,7 @@ namespace WebApi.Services {
                 Id = Guid.NewGuid(),
                 Title = dto.Title,
                 TypeCode = dto.TypeCode,
-                CurrentStatus = "ReadyForRelease",
+                CurrentStatus = dto.InitialStatusCode,
                 LastUpdatedUtc = DateTime.UtcNow
             };
 
@@ -40,23 +40,35 @@ namespace WebApi.Services {
             return entity.Id;
         }
 
-        public async Task<IEnumerable<CommunicationDto>> GetAllCommunicationsAsync()
+        public async Task<PaginatedResult<CommunicationDto>> GetPaginatedCommunicationsAsync(int pageNumber, int pageSize)
         {
-            var comms = await _db.Communications
-                .Include(c => c.CommunicationType)
-                .Include(c => c.StatusHistory)
+            var query = _db.Communications
+                .OrderByDescending(c => c.LastUpdatedUtc); // sort as needed
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(c => new CommunicationDto
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    TypeCode = c.TypeCode,
+                    CurrentStatus = c.CurrentStatus,
+                    LastUpdatedUtc = c.LastUpdatedUtc
+                })
                 .ToListAsync();
 
-            return comms.Select(c => new CommunicationDto
+            return new PaginatedResult<CommunicationDto>
             {
-                Id = c.Id,
-                Title = c.Title,
-                TypeCode = c.TypeCode,
-                CurrentStatus = c.CurrentStatus,
-                LastUpdatedUtc = c.LastUpdatedUtc
-                // Map other needed properties
-            });
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
+
 
 
         public async Task<CommunicationDto?> GetCommunicationAsync(Guid id)

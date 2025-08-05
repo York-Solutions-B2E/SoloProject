@@ -41,7 +41,7 @@ builder.Services.Configure<OpenIdConnectOptions>(OktaDefaults.MvcAuthenticationS
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        RoleClaimType = "groups"
+        RoleClaimType = "Roles"
     };
 });
 
@@ -52,7 +52,7 @@ builder.Services.AddHttpClient("ApiClient", client =>
     client.BaseAddress = new Uri("http://webapi"); 
 })
 .AddHttpMessageHandler<AccessTokenService>();
-builder.Services.AddScoped<ReadCommunicationService>();
+builder.Services.AddScoped<CreateReadCommunicationService>();
 
 builder.Services.AddScoped<AccessTokenService>();
 builder.Services.AddScoped<CRUDCommunicationTypeService>();

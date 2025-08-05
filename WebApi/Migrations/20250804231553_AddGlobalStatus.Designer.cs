@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.CommunicationDbContext;
 
@@ -11,9 +12,11 @@ using WebApi.CommunicationDbContext;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250804231553_AddGlobalStatus")]
+    partial class AddGlobalStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,78 +136,6 @@ namespace WebApi.Migrations
                     b.HasKey("StatusCode");
 
                     b.ToTable("GlobalStatuses");
-
-                    b.HasData(
-                        new
-                        {
-                            StatusCode = "ReadyForRelease",
-                            Description = "Ready For Release"
-                        },
-                        new
-                        {
-                            StatusCode = "Released",
-                            Description = "Released"
-                        },
-                        new
-                        {
-                            StatusCode = "QueuedForPrinting",
-                            Description = "Queued For Printing"
-                        },
-                        new
-                        {
-                            StatusCode = "Printed",
-                            Description = "Printed"
-                        },
-                        new
-                        {
-                            StatusCode = "Inserted",
-                            Description = "Inserted"
-                        },
-                        new
-                        {
-                            StatusCode = "WarehouseReady",
-                            Description = "Warehouse Ready"
-                        },
-                        new
-                        {
-                            StatusCode = "Shipped",
-                            Description = "Shipped"
-                        },
-                        new
-                        {
-                            StatusCode = "InTransit",
-                            Description = "In Transit"
-                        },
-                        new
-                        {
-                            StatusCode = "Delivered",
-                            Description = "Delivered"
-                        },
-                        new
-                        {
-                            StatusCode = "Returned",
-                            Description = "Returned"
-                        },
-                        new
-                        {
-                            StatusCode = "Failed",
-                            Description = "Failed"
-                        },
-                        new
-                        {
-                            StatusCode = "Cancelled",
-                            Description = "Cancelled"
-                        },
-                        new
-                        {
-                            StatusCode = "Expired",
-                            Description = "Expired"
-                        },
-                        new
-                        {
-                            StatusCode = "Archived",
-                            Description = "Archived"
-                        });
                 });
 
             modelBuilder.Entity("WebApi.Entities.Communication", b =>

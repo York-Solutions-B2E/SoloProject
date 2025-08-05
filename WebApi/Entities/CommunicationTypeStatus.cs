@@ -6,6 +6,6 @@ namespace WebApi.Entities
         public required string StatusCode { get; set; }
         public required string Description { get; set; }
 
-        public required CommunicationType CommunicationType { get; set; }
+        public CommunicationType? CommunicationType { get; set; }
     }
 }

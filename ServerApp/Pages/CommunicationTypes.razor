@@ -1,8 +1,12 @@
 @page "/admin/communication-types"
+
 @using global::App.Shared.Dtos
 @using ServerApp.Services
 @inject CRUDCommunicationTypeService TypeService
+@attribute [Authorize(Roles = "Admin")]
 
+<AuthorizeView Roles="Admin">
+    <Authorized>
 <h3>Manage Communication Types</h3>
 
 @if (types == null)
@@ -28,6 +32,20 @@ else
                     <td><input @bind="editType.TypeCode" class="form-control" /></td>
                     <td><input @bind="editType.DisplayName" class="form-control" /></td>
                     <td>
+                        <div>
+                            <h6>Statuses</h6>
+                            @foreach (var status in editType.Statuses)
+                            {
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input"
+                                        @bind="status.IsValid" />
+                                    <label class="form-check-label">@status.StatusCode</label>
+                                    <input placeholder="Description"
+                                        @bind="status.Description"
+                                        class="form-control form-control-sm mt-1" />
+                                </div>
+                            }
+                        </div>
                         <button class="btn btn-sm btn-success" @onclick="SaveEdit">Save</button>
                         <button class="btn btn-sm btn-secondary" @onclick="CancelEdit">Cancel</button>
                     </td>
@@ -51,6 +69,14 @@ else
 <input placeholder="Type Code" @bind="newType.TypeCode" class="form-control" />
 <input placeholder="Display Name" @bind="newType.DisplayName" class="form-control" />
 <button class="btn btn-primary mt-2" @onclick="AddType">Add</button>
+</Authorized>
+
+    <NotAuthorized>
+        <div class="alert alert-danger mt-3">
+            You are not authorized to view this page.
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     private List<CommunicationTypeDto>? types;
@@ -80,13 +106,14 @@ else
         }
     }
 
-    private void StartEdit(CommunicationTypeDto type)
+    private async Task StartEdit(CommunicationTypeDto type)
     {
         // Clone the object so editing is isolated until saved
         editType = new CommunicationTypeDto
         {
         TypeCode = type.TypeCode,
-        DisplayName = type.DisplayName
+        DisplayName = type.DisplayName,
+        Statuses = await TypeService.GetStatusesForTypeAsync(type.TypeCode)
         };
     }
 
@@ -94,15 +121,13 @@ else
     {
         if (editType is not null)
         {
-            bool success = await TypeService.UpdateAsync(editType);
-            if (success)
+            bool nameUpdated = await TypeService.UpdateAsync(editType);
+            bool statusesUpdated = await TypeService.UpdateStatusesAsync(editType.TypeCode, editType.Statuses);
+
+            if (nameUpdated && statusesUpdated)
             {
                 types = await TypeService.GetAllAsync();
-                editType = null; // exit editing mode
-            }
-            else
-            {
-            // handle failure, e.g. show a message
+                editType = null;
             }
         }
     }

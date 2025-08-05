@@ -12,7 +12,68 @@ public class CommunicationTypeService : ICommunicationTypeService
     {
         _db = db;
     }
+    
+    public async Task<List<CommunicationTypeStatusDto>> GetStatusesForTypeAsync(string typeCode)
+    {
+        var allGlobalStatuses = await _db.GlobalStatuses // assume you have a table for all status codes
+            .Select(s => new CommunicationTypeStatusDto
+            {
+                TypeCode = typeCode, // <-- satisfies the required member
+                StatusCode = s.StatusCode,
+                Description = s.Description,
+                IsValid = false // default, will flip if exists for type
+            })
+            .ToListAsync();
 
+        var typeStatuses = await _db.CommunicationTypeStatuses
+            .Where(ts => ts.TypeCode == typeCode)
+            .ToListAsync();
+
+        foreach (var dto in allGlobalStatuses)
+        {
+            var match = typeStatuses.FirstOrDefault(ts => ts.StatusCode == dto.StatusCode);
+            if (match != null)
+            {
+                dto.IsValid = true;
+                dto.Description = match.Description;
+            }
+        }
+        Console.WriteLine($"Global statuses found: {allGlobalStatuses.Count}");
+        foreach (var s in allGlobalStatuses)
+        {
+            Console.WriteLine($" - {s.StatusCode} ({s.Description})");
+        }
+
+
+        return allGlobalStatuses;
+    }
+
+    public async Task<bool> UpdateStatusesAsync(string typeCode, List<CommunicationTypeStatusDto> statuses)
+    {
+        var existing = await _db.CommunicationTypeStatuses
+            .Where(ts => ts.TypeCode == typeCode)
+            .ToListAsync();
+
+        _db.CommunicationTypeStatuses.RemoveRange(existing);
+
+        var communicationType = await _db.CommunicationTypes.FindAsync(typeCode);
+
+        var toAdd = statuses
+            .Where(s => s.IsValid)
+            .Select(s => new CommunicationTypeStatus
+            {
+                TypeCode = typeCode,
+                StatusCode = s.StatusCode,
+                Description = s.Description,
+                CommunicationType = communicationType
+            })
+            .ToList();
+
+        _db.CommunicationTypeStatuses.AddRange(toAdd);
+        await _db.SaveChangesAsync();
+
+        return true;
+    }
     public async Task<IEnumerable<CommunicationTypeDto>> GetAllAsync()
     {
         return await _db.CommunicationTypes
