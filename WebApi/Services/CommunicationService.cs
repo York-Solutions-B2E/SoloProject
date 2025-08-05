@@ -116,5 +116,21 @@ namespace WebApi.Services {
                 LastUpdatedUtc = entity.LastUpdatedUtc
             };
         }
+
+        public async Task<List<CommunicationDto>> GetAllAsync()
+        {
+            return await _db.Communications
+                .Select(c => new CommunicationDto
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    TypeCode = c.CommunicationType.TypeCode,
+                    CurrentStatus = c.CurrentStatus,
+                    LastUpdatedUtc = c.LastUpdatedUtc
+                })
+                .ToListAsync();
+        }
+
+
     }
 }

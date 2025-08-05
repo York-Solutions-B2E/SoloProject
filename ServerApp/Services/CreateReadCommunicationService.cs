@@ -18,7 +18,13 @@ namespace ServerApp.Services
         return response.IsSuccessStatusCode;
     }
 
-
+    public async Task<List<CommunicationDto>> GetAllAsync()
+    {
+        var response = await _client.GetFromJsonAsync<List<CommunicationDto>>("api/communications/all");
+        if (response == null)
+            throw new Exception("Failed to retrieve communications from API.");
+        return response;
+    }
     public async Task<PaginatedResult<CommunicationDto>> GetCommunicationsAsync(int pageNumber, int pageSize)
         {
             var response = await _client.GetFromJsonAsync<PaginatedResult<CommunicationDto>>(

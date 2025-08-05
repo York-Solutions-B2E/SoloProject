@@ -27,7 +27,7 @@ namespace WebApi.Controllers
 
             return Ok(details);
         }
-
+        //getall paginated
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CommunicationDto>>> GetAll([FromQuery] int pageNumber = 1, 
         [FromQuery] int pageSize = 10)
@@ -35,6 +35,14 @@ namespace WebApi.Controllers
             var comms = await _communicationService.GetPaginatedCommunicationsAsync(pageNumber, pageSize);
             return Ok(comms);
         }
+        //getall non paginated
+        [HttpGet("all")]
+        public async Task<ActionResult<List<CommunicationDto>>> GetAllCommunications()
+        {
+            var list = await _communicationService.GetAllAsync();
+            return Ok(list);
+        }
+
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<CommunicationDto>> GetById(Guid id)
