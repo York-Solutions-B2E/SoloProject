@@ -18,9 +18,19 @@ namespace WebApi.Controllers
             _communicationService = communicationService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CommunicationDetailsDto>> GetDetails(Guid id)
+        {
+            var details = await _communicationService.GetCommunicationDetailsAsync(id);
+            if (details == null)
+                return NotFound();
+
+            return Ok(details);
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CommunicationDto>>> GetAll([FromQuery] int pageNumber = 1, 
-    [FromQuery] int pageSize = 10)
+        [FromQuery] int pageSize = 10)
         {
             var comms = await _communicationService.GetPaginatedCommunicationsAsync(pageNumber, pageSize);
             return Ok(comms);

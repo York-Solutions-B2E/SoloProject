@@ -43,28 +43,32 @@ namespace WebApi.CommunicationDbContext
             new GlobalStatuses { StatusCode = "Archived", Description = "Archived" }
             );
 
+            modelBuilder.Entity<CommunicationType>()
+                .HasKey(ct => ct.Id);
+
+            modelBuilder.Entity<CommunicationType>()
+                .HasIndex(ct => ct.TypeCode)
+                .IsUnique();
+
             modelBuilder.Entity<Communication>()
-            .HasKey(c => c.Id);
+                .HasOne(c => c.CommunicationType)
+                .WithMany(ct => ct.Communications)
+                .HasForeignKey(c => c.CommunicationTypeId);
+
+            modelBuilder.Entity<CommunicationTypeStatus>()
+                .HasKey(s => new { s.CommunicationTypeId, s.StatusCode });
+                
+            modelBuilder.Entity<CommunicationTypeStatus>()
+                .HasOne(s => s.CommunicationType)
+                .WithMany(ct => ct.Statuses)
+                .HasForeignKey(s => s.CommunicationTypeId);
 
             modelBuilder.Entity<CommunicationStatusHistory>()
                 .HasOne(h => h.Communication)
                 .WithMany(c => c.StatusHistory)
                 .HasForeignKey(h => h.CommunicationId);
 
-            modelBuilder.Entity<CommunicationType>()
-                .HasKey(t => t.TypeCode);
-            //Composite key
-            modelBuilder.Entity<CommunicationTypeStatus>()
-                .HasKey(ts => new { ts.TypeCode, ts.StatusCode });
-
-            modelBuilder.Entity<CommunicationTypeStatus>()
-                .HasOne(ts => ts.CommunicationType)
-                .WithMany(t => t.Statuses)
-                .HasForeignKey(ts => ts.TypeCode);
-            modelBuilder.Entity<CommunicationType>().HasData(
-                new CommunicationType { TypeCode = "EOB", DisplayName = "Explanation of Benefits" },
-                new CommunicationType { TypeCode = "IDCARD", DisplayName = "ID Card" }
-        );
+            
 
         }
         

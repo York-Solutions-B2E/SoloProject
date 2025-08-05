@@ -31,21 +31,21 @@ namespace ServerApp.Services
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteAsync(string typeCode)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            var response = await _http.DeleteAsync($"api/communicationtype/{typeCode}");
+            var response = await _http.DeleteAsync($"api/communicationtype/{id}");
             return response.IsSuccessStatusCode;
         }
         
-        public async Task<List<CommunicationTypeStatusDto>> GetStatusesForTypeAsync(string typeCode)
+        public async Task<List<CommunicationTypeStatusDto>> GetStatusesForTypeAsync(Guid id)
         {
-            return await _http.GetFromJsonAsync<List<CommunicationTypeStatusDto>>($"api/communicationtype/{typeCode}/statuses")
+            return await _http.GetFromJsonAsync<List<CommunicationTypeStatusDto>>($"api/communicationtype/{id}/statuses")
                 ?? new List<CommunicationTypeStatusDto>();
         }
 
-        public async Task<bool> UpdateStatusesAsync(string typeCode, List<CommunicationTypeStatusDto> statuses)
+        public async Task<bool> UpdateStatusesAsync(Guid id, List<CommunicationTypeStatusDto> statuses)
         {
-            var response = await _http.PutAsJsonAsync($"api/communicationtype/{typeCode}/statuses", statuses);
+            var response = await _http.PutAsJsonAsync($"api/communicationtype/{id}/statuses", statuses);
             return response.IsSuccessStatusCode;
         }
 

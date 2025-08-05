@@ -17,21 +17,50 @@ namespace WebApi.Services {
             _db = db;
         }
 
+        public async Task<CommunicationDetailsDto?> GetCommunicationDetailsAsync(Guid communicationId)
+        {
+            var communication = await _db.Communications
+            .Include(c => c.CommunicationType)
+            .Include(c => c.StatusHistory)
+            .FirstOrDefaultAsync(c => c.Id == communicationId);
+
+
+            if (communication == null)
+                return null;
+
+            return new CommunicationDetailsDto
+            {
+                Id = communication.Id,
+                Title = communication.Title,
+                TypeCode = communication.CommunicationType.TypeCode,
+                CurrentStatusCode = communication.CurrentStatus,
+                CreatedAt = communication.LastUpdatedUtc,
+                SourceFileUrl = communication.SourceFileUrl,
+                StatusHistory = communication.StatusHistory.Select(sh => new CommunicationStatusHistoryDto
+                {
+                    StatusCode = sh.StatusCode,
+                    OccurredUtc = sh.OccurredUtc
+                }).ToList()
+            };
+        }
+
         public async Task<Guid> CreateCommunicationAsync(CreateCommunicationDto dto)
         {
-            var communicationTypeExists = await _db.CommunicationTypes
-            .AnyAsync(ct => ct.TypeCode == dto.TypeCode);
+            // Find the CommunicationType entity by TypeCode
+            var communicationType = await _db.CommunicationTypes
+                .FirstOrDefaultAsync(ct => ct.TypeCode == dto.TypeCode);
 
-            if (!communicationTypeExists)
+            if (communicationType == null)
                 throw new ArgumentException($"Invalid TypeCode: {dto.TypeCode}");
 
             var entity = new Communication
             {
                 Id = Guid.NewGuid(),
                 Title = dto.Title,
-                TypeCode = dto.TypeCode,
+                CommunicationTypeId = communicationType.Id,   // use surrogate key here
                 CurrentStatus = dto.InitialStatusCode,
-                LastUpdatedUtc = DateTime.UtcNow
+                LastUpdatedUtc = DateTime.UtcNow,
+                // Assign other properties as needed
             };
 
             _db.Communications.Add(entity);
@@ -39,6 +68,7 @@ namespace WebApi.Services {
 
             return entity.Id;
         }
+
 
         public async Task<PaginatedResult<CommunicationDto>> GetPaginatedCommunicationsAsync(int pageNumber, int pageSize)
         {
@@ -54,7 +84,7 @@ namespace WebApi.Services {
                 {
                     Id = c.Id,
                     Title = c.Title,
-                    TypeCode = c.TypeCode,
+                    TypeCode = c.CommunicationType.TypeCode,
                     CurrentStatus = c.CurrentStatus,
                     LastUpdatedUtc = c.LastUpdatedUtc
                 })
@@ -73,13 +103,15 @@ namespace WebApi.Services {
 
         public async Task<CommunicationDto?> GetCommunicationAsync(Guid id)
         {
-            var entity = await _db.Communications.FindAsync(id);
+            var entity = await _db.Communications
+                .Include(c => c.CommunicationType)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             return entity == null ? null : new CommunicationDto
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                TypeCode = entity.TypeCode,
+                TypeCode = entity.CommunicationType.TypeCode,
                 CurrentStatus = entity.CurrentStatus,
                 LastUpdatedUtc = entity.LastUpdatedUtc
             };

@@ -41,23 +41,23 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{typeCode}")]
-        public async Task<IActionResult> Delete(string typeCode)
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var success = await _communicationTypeService.DeleteAsync(typeCode);
+            var success = await _communicationTypeService.DeleteAsync(id);
             return success ? NoContent() : NotFound();
         }
         [HttpGet("{typeCode}/statuses")]
-        public async Task<ActionResult<List<CommunicationTypeStatusDto>>> GetStatusesForType(string typeCode)
+        public async Task<ActionResult<List<CommunicationTypeStatusDto>>> GetStatusesForType(Guid id)
         {
-            var statuses = await _communicationTypeService.GetStatusesForTypeAsync(typeCode);
+            var statuses = await _communicationTypeService.GetStatusesForTypeAsync(id);
             return Ok(statuses);
         }
 
-        [HttpPut("{typeCode}/statuses")]
-        public async Task<IActionResult> UpdateStatuses(string typeCode, List<CommunicationTypeStatusDto> statuses)
+        [HttpPut("{id}/statuses")]
+        public async Task<IActionResult> UpdateStatuses(Guid id, List<CommunicationTypeStatusDto> statuses)
         {
-            await _communicationTypeService.UpdateStatusesAsync(typeCode, statuses);
+            await _communicationTypeService.UpdateStatusesAsync(id, statuses);
             return NoContent();
         }
     }

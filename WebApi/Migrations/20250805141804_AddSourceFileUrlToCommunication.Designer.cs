@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.CommunicationDbContext;
 
@@ -11,9 +12,11 @@ using WebApi.CommunicationDbContext;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250805141804_AddSourceFileUrlToCommunication")]
+    partial class AddSourceFileUrlToCommunication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,8 +31,8 @@ namespace WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CommunicationTypeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CommunicationTypeTypeCode")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CurrentStatus")
                         .IsRequired()
@@ -45,9 +48,13 @@ namespace WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TypeCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CommunicationTypeId");
+                    b.HasIndex("CommunicationTypeTypeCode");
 
                     b.ToTable("Communications");
                 });
@@ -79,30 +86,34 @@ namespace WebApi.Migrations
 
             modelBuilder.Entity("WebApi.Entities.CommunicationType", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("TypeCode")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TypeCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TypeCode")
-                        .IsUnique();
+                    b.HasKey("TypeCode");
 
                     b.ToTable("CommunicationTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            TypeCode = "EOB",
+                            DisplayName = "Explanation of Benefits"
+                        },
+                        new
+                        {
+                            TypeCode = "IDCARD",
+                            DisplayName = "ID Card"
+                        });
                 });
 
             modelBuilder.Entity("WebApi.Entities.CommunicationTypeStatus", b =>
                 {
-                    b.Property<Guid>("CommunicationTypeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("TypeCode")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("StatusCode")
                         .HasColumnType("nvarchar(450)");
@@ -111,7 +122,7 @@ namespace WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CommunicationTypeId", "StatusCode");
+                    b.HasKey("TypeCode", "StatusCode");
 
                     b.ToTable("CommunicationTypeStatuses");
                 });
@@ -206,9 +217,7 @@ namespace WebApi.Migrations
                 {
                     b.HasOne("WebApi.Entities.CommunicationType", "CommunicationType")
                         .WithMany("Communications")
-                        .HasForeignKey("CommunicationTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CommunicationTypeTypeCode");
 
                     b.Navigation("CommunicationType");
                 });
@@ -228,7 +237,7 @@ namespace WebApi.Migrations
                 {
                     b.HasOne("WebApi.Entities.CommunicationType", "CommunicationType")
                         .WithMany("Statuses")
-                        .HasForeignKey("CommunicationTypeId")
+                        .HasForeignKey("TypeCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

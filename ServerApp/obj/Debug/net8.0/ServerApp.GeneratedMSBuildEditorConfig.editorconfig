@@ -28,6 +28,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRkQ29tbXVuaWNhdGlvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/yorkmacbook017/Desktop/SoloProject/ServerApp/Pages/CommunicationDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ29tbXVuaWNhdGlvbkRldGFpbHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/yorkmacbook017/Desktop/SoloProject/ServerApp/Pages/Communications.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ29tbXVuaWNhdGlvbnMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

@@ -9,6 +9,7 @@
     <Authorized>
 <h3>Manage Communication Types</h3>
 
+
 @if (types == null)
 {
     <p><em>Loading...</em></p>
@@ -27,7 +28,7 @@ else
         @foreach (var t in types)
         {
             <tr>
-                @if (editType != null && editType.TypeCode == t.TypeCode)
+                @if (editType != null && editType.Id == t.Id)
                 {
                     <td><input @bind="editType.TypeCode" class="form-control" /></td>
                     <td><input @bind="editType.DisplayName" class="form-control" /></td>
@@ -56,7 +57,7 @@ else
                     <td>@t.DisplayName</td>
                     <td>
                         <button class="btn btn-sm btn-primary" @onclick="() => StartEdit(t)">Edit</button>
-                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteType(t.TypeCode)">Delete</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteType(t.Id)">Delete</button>
                     </td>
                 }
             </tr>
@@ -81,12 +82,13 @@ else
 @code {
     private List<CommunicationTypeDto>? types;
     private CommunicationTypeDto newType = new CommunicationTypeDto
+    {
+        TypeCode = string.Empty,
+        DisplayName = string.Empty
+    };
+    private string? editingTypeCode;
 
-    
-{
-    TypeCode = string.Empty,
-    DisplayName = string.Empty
-};
+
     private CommunicationTypeDto? editType;
     protected override async Task OnInitializedAsync()
     {
@@ -108,12 +110,14 @@ else
 
     private async Task StartEdit(CommunicationTypeDto type)
     {
+        
         // Clone the object so editing is isolated until saved
         editType = new CommunicationTypeDto
         {
+        Id = type.Id,
         TypeCode = type.TypeCode,
         DisplayName = type.DisplayName,
-        Statuses = await TypeService.GetStatusesForTypeAsync(type.TypeCode)
+        Statuses = await TypeService.GetStatusesForTypeAsync(type.Id)
         };
     }
 
@@ -121,25 +125,27 @@ else
     {
         if (editType is not null)
         {
-            bool nameUpdated = await TypeService.UpdateAsync(editType);
-            bool statusesUpdated = await TypeService.UpdateStatusesAsync(editType.TypeCode, editType.Statuses);
+            bool updated = await TypeService.UpdateAsync(editType);
+            bool statusesUpdated = await TypeService.UpdateStatusesAsync(editType.Id, editType.Statuses);
 
-            if (nameUpdated && statusesUpdated)
+            if (updated && statusesUpdated)
             {
                 types = await TypeService.GetAllAsync();
                 editType = null;
             }
         }
+
     }
 
     private void CancelEdit()
     {
-    editType = null; // discard changes and exit editing mode
+        editType = null; // discard changes and exit editing mode
+        
     }
 
-    private async Task DeleteType(string typeCode)
+    private async Task DeleteType(Guid id)
     {
-        if (await TypeService.DeleteAsync(typeCode))
+        if (await TypeService.DeleteAsync(id))
         {
             types = await TypeService.GetAllAsync();
         }

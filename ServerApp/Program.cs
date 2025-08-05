@@ -49,9 +49,10 @@ builder.Services.Configure<OpenIdConnectOptions>(OktaDefaults.MvcAuthenticationS
 builder.Services.AddHttpClient("ApiClient", client =>
 {
     //Docker Compose name
-    client.BaseAddress = new Uri("http://webapi"); 
+    client.BaseAddress = new Uri("http://webapi");
 })
 .AddHttpMessageHandler<AccessTokenService>();
+builder.Services.AddScoped<CommunicationDetailsService>();
 builder.Services.AddScoped<CreateReadCommunicationService>();
 
 builder.Services.AddScoped<AccessTokenService>();

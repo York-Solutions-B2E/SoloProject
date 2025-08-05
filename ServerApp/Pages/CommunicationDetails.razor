@@ -1,0 +1,44 @@
+@page "/communications/{CommunicationId}"
+@using ServerApp.Services
+@using global::App.Shared.Dtos
+@inject CommunicationDetailsService DetailsService
+
+<h3>Communication Details</h3>
+
+@if (details == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <h4>@details.Title</h4>
+        <p>Type: @details.TypeCode</p>
+        <p>Current Status: @details.CurrentStatusCode</p>
+        <p>Created At: @details.CreatedAt.ToString("g")</p>
+        @if (!string.IsNullOrEmpty(details.SourceFileUrl))
+        {
+            <p>Source File: <a href="@details.SourceFileUrl" target="_blank">View File</a></p>
+        }
+    </div>
+
+    <h5>Status History</h5>
+    <ul>
+        @foreach (var status in details.StatusHistory.OrderBy(s => s.OccurredUtc))
+        {
+            <li>@status.OccurredUtc.ToString("g"): @status.StatusCode</li>
+        }
+    </ul>
+}
+
+@code {
+    [Parameter]
+    public string CommunicationId { get; set; } = null!;
+
+    private CommunicationDetailsDto? details;
+
+    protected override async Task OnInitializedAsync()
+    {
+        details = await DetailsService.GetCommunicationDetailsAsync(CommunicationId);
+    }
+}

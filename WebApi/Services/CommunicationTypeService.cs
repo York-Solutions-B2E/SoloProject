@@ -13,73 +13,77 @@ public class CommunicationTypeService : ICommunicationTypeService
         _db = db;
     }
     
-    public async Task<List<CommunicationTypeStatusDto>> GetStatusesForTypeAsync(string typeCode)
+    public async Task<List<CommunicationTypeStatusDto>> GetStatusesForTypeAsync(Guid id)
     {
+        var communicationType = await _db.CommunicationTypes
+            .Include(ct => ct.Statuses)
+            .FirstOrDefaultAsync(ct => ct.Id == id);
+
         var allGlobalStatuses = await _db.GlobalStatuses // assume you have a table for all status codes
             .Select(s => new CommunicationTypeStatusDto
             {
-                TypeCode = typeCode, // <-- satisfies the required member
+                CommunicationTypeId = id,
+                TypeCode = communicationType.TypeCode, // <-- satisfies the required member
                 StatusCode = s.StatusCode,
                 Description = s.Description,
                 IsValid = false // default, will flip if exists for type
             })
             .ToListAsync();
 
-        var typeStatuses = await _db.CommunicationTypeStatuses
-            .Where(ts => ts.TypeCode == typeCode)
-            .ToListAsync();
+        
 
-        foreach (var dto in allGlobalStatuses)
+
+        if (communicationType != null)
         {
-            var match = typeStatuses.FirstOrDefault(ts => ts.StatusCode == dto.StatusCode);
-            if (match != null)
+            foreach (var dto in allGlobalStatuses)
             {
-                dto.IsValid = true;
-                dto.Description = match.Description;
+                var match = communicationType.Statuses.FirstOrDefault(ts => ts.StatusCode == dto.StatusCode);
+                if (match != null)
+                {
+                    dto.IsValid = true;
+                    dto.Description = match.Description;
+                }
             }
         }
-        Console.WriteLine($"Global statuses found: {allGlobalStatuses.Count}");
-        foreach (var s in allGlobalStatuses)
-        {
-            Console.WriteLine($" - {s.StatusCode} ({s.Description})");
-        }
-
 
         return allGlobalStatuses;
     }
 
-    public async Task<bool> UpdateStatusesAsync(string typeCode, List<CommunicationTypeStatusDto> statuses)
+    public async Task<bool> UpdateStatusesAsync(Guid id, List<CommunicationTypeStatusDto> statuses)
     {
-        var existing = await _db.CommunicationTypeStatuses
-            .Where(ts => ts.TypeCode == typeCode)
-            .ToListAsync();
+        var communicationType = await _db.CommunicationTypes
+            .Include(ct => ct.Statuses)
+            .FirstOrDefaultAsync(ct => ct.Id == id);
 
-        _db.CommunicationTypeStatuses.RemoveRange(existing);
+        if (communicationType == null) return false;
 
-        var communicationType = await _db.CommunicationTypes.FindAsync(typeCode);
+        // Remove old statuses
+        _db.CommunicationTypeStatuses.RemoveRange(communicationType.Statuses);
 
+        // Add new ones
         var toAdd = statuses
             .Where(s => s.IsValid)
             .Select(s => new CommunicationTypeStatus
             {
-                TypeCode = typeCode,
+                CommunicationTypeId = communicationType.Id, // FK by surrogate key
                 StatusCode = s.StatusCode,
                 Description = s.Description,
-                CommunicationType = communicationType
             })
             .ToList();
 
-        _db.CommunicationTypeStatuses.AddRange(toAdd);
-        await _db.SaveChangesAsync();
+        communicationType.Statuses = toAdd;
 
+        await _db.SaveChangesAsync();
         return true;
     }
+    
     public async Task<IEnumerable<CommunicationTypeDto>> GetAllAsync()
     {
         return await _db.CommunicationTypes
             .Include(t => t.Statuses)
             .Select(t => new CommunicationTypeDto
             {
+                Id = t.Id,
                 TypeCode = t.TypeCode,
                 DisplayName = t.DisplayName
             })
@@ -90,6 +94,7 @@ public class CommunicationTypeService : ICommunicationTypeService
     {
         var entity = new CommunicationType
         {
+            Id = Guid.NewGuid(),
             TypeCode = dto.TypeCode,
             DisplayName = dto.DisplayName
         };
@@ -99,6 +104,7 @@ public class CommunicationTypeService : ICommunicationTypeService
 
         return new CommunicationTypeDto
         {
+            Id = entity.Id,
             TypeCode = entity.TypeCode,
             DisplayName = dto.DisplayName
         };
@@ -106,10 +112,19 @@ public class CommunicationTypeService : ICommunicationTypeService
     public async Task<bool> UpdateAsync(CommunicationTypeDto dto)
     {
         var entity = await _db.CommunicationTypes
-            .FirstOrDefaultAsync(c => c.TypeCode == dto.TypeCode);
+            .FirstOrDefaultAsync(c => c.Id == dto.Id);
 
         if (entity == null)
             return false;
+
+        // Allow updating TypeCode and DisplayName
+        // If you want to allow changing TypeCode (string), update that only:
+        if (!string.Equals(entity.TypeCode, dto.TypeCode, StringComparison.OrdinalIgnoreCase))
+        {
+            
+            entity.TypeCode = dto.TypeCode;
+            // No need to update Communications — they reference by CommunicationTypeId (surrogate key)
+        }
 
         entity.DisplayName = dto.DisplayName;
 
@@ -117,9 +132,10 @@ public class CommunicationTypeService : ICommunicationTypeService
         return true;
     }
 
-    public async Task<bool> DeleteAsync(string typeCode)
+
+    public async Task<bool> DeleteAsync(Guid id)
     {
-        var entity = await _db.CommunicationTypes.FindAsync(typeCode);
+        var entity = await _db.CommunicationTypes.FindAsync(id);
         if (entity == null) return false;
 
         _db.CommunicationTypes.Remove(entity);

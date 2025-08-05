@@ -2,9 +2,11 @@ namespace App.Shared.Dtos
 {
     public class CommunicationDetailsDto
 {
-    public string Id { get; set; } = null!;
+    public Guid Id { get; set; }
     public string Title { get; set; } = null!;
-    public string TypeCode { get; set; } = null!;
+    
+    public Guid CommunicationTypeId { get; set; }  // FK to CommunicationType.Id
+    public required string TypeCode { get; set; } 
     public string CurrentStatusCode { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
     public string? SourceFileUrl { get; set; }
