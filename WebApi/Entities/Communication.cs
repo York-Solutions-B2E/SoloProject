@@ -12,6 +12,6 @@ namespace WebApi.Entities
 
         //
         public CommunicationType? CommunicationType { get; set; }
-        public List<CommunicationStatusHistory> StatusHistory { get; set; } = [];
+        public List<CommunicationStatusHistory> StatusHistory { get; set; } = new List<CommunicationStatusHistory>();
     }
 }

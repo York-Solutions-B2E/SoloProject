@@ -11,11 +11,12 @@ namespace WebApi.Services
     public class CommunicationEventConsumer : BackgroundService
 {
     private readonly IServiceProvider _services;
+    
 
     public CommunicationEventConsumer(IServiceProvider services)
-    {
-        _services = services;
-    }
+        {
+            _services = services;
+        }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -60,7 +61,7 @@ namespace WebApi.Services
             await channel.BasicAckAsync(ea.DeliveryTag, false);
         };
 
-        await channel.BasicConsumeAsync("communication_events", false, consumer);
+        await channel.BasicConsumeAsync("communication_events", false, consumer, cancellationToken: stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
         {

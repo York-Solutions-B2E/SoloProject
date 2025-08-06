@@ -18,9 +18,11 @@ namespace WebApi.Controllers
             _communicationService = communicationService;
         }
 
-        [HttpGet("{id}")]
+
+        
+        [HttpGet("details/{id:guid}")]
         public async Task<ActionResult<CommunicationDetailsDto>> GetDetails(Guid id)
-        {
+        {                                               
             var details = await _communicationService.GetCommunicationDetailsAsync(id);
             if (details == null)
                 return NotFound();

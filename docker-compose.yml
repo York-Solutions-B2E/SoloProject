@@ -43,7 +43,10 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro
     depends_on:
-      - sqlserver
+      rabbitmq:
+        condition: service_healthy
+      
+      
 
  
 
@@ -53,3 +56,8 @@ services:
     ports:
      - "5672:5672"     # For apps
      - "15672:15672"   # For browser-based management UI
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 5s
+      timeout: 5s
+      retries: 10

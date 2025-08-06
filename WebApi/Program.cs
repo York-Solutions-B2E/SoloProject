@@ -26,6 +26,8 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddScoped<ICommunicationTypeService, CommunicationTypeService>();
 builder.Services.AddScoped<ICommunicationService, CommunicationService>();
+builder.Services.AddHostedService<CommunicationEventConsumer>();
+
 builder.Services.AddScoped<CommunicationEventPublisher>();
 
 builder.Services.AddAuthentication(options =>

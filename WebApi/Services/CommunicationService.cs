@@ -11,23 +11,30 @@ namespace WebApi.Services {
     public class CommunicationService : ICommunicationService
     {
         private readonly AppDbContext _db;
+        
 
         public CommunicationService(AppDbContext db)
         {
+            
             _db = db;
         }
 
         public async Task<CommunicationDetailsDto?> GetCommunicationDetailsAsync(Guid communicationId)
         {
             var communication = await _db.Communications
-            .Include(c => c.CommunicationType)
-            .Include(c => c.StatusHistory)
-            .FirstOrDefaultAsync(c => c.Id == communicationId);
+                .Include(c => c.CommunicationType)
+                .Include(c => c.StatusHistory)
+                .FirstOrDefaultAsync(c => c.Id == communicationId);
 
+
+            Console.WriteLine($"History count for {communicationId}: {communication?.StatusHistory?.Count}");
+
+            
+            
 
             if (communication == null)
                 return null;
-
+            
             return new CommunicationDetailsDto
             {
                 Id = communication.Id,

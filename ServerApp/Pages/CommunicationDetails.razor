@@ -1,4 +1,4 @@
-@page "/communications/{CommunicationId}"
+@page "/communications/{CommunicationId:guid}"
 @using ServerApp.Services
 @using global::App.Shared.Dtos
 @inject CommunicationDetailsService DetailsService
@@ -33,12 +33,12 @@ else
 
 @code {
     [Parameter]
-    public string CommunicationId { get; set; } = null!;
+    public Guid CommunicationId { get; set; }
 
     private CommunicationDetailsDto? details;
 
     protected override async Task OnInitializedAsync()
     {
-        details = await DetailsService.GetCommunicationDetailsAsync(CommunicationId);
+        details = await DetailsService.FetchCommunicationDetailsAsync(CommunicationId);
     }
 }

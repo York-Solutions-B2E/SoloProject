@@ -11,9 +11,9 @@ namespace ServerApp.Services
         _client = factory.CreateClient("ApiClient");
     }
 
-    public async Task<CommunicationDetailsDto?> GetCommunicationDetailsAsync(string communicationId)
+    public async Task<CommunicationDetailsDto?> FetchCommunicationDetailsAsync(Guid communicationId)
     {
-        return await _client.GetFromJsonAsync<CommunicationDetailsDto>($"api/communications/{communicationId}");
+        return await _client.GetFromJsonAsync<CommunicationDetailsDto>($"api/communications/details/{communicationId}");
     }
 }
 
