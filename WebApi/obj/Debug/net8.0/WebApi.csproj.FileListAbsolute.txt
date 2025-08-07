@@ -141,3 +141,4 @@
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.pdb
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/WebApi.genruntimeconfig.cache
 /Users/yorkmacbook017/Desktop/SoloProject/WebApi/obj/Debug/net8.0/ref/WebApi.dll
+/Users/yorkmacbook017/Desktop/SoloProject/WebApi/bin/Debug/net8.0/RabbitMQ.Client.dll

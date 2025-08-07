@@ -30,9 +30,11 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(CommunicationTypeDto type)
         {
+            
             var created = await _communicationTypeService.CreateAsync(type);
             return Ok(created);
         }
+
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] CommunicationTypeDto dto)
         {
@@ -47,9 +49,11 @@ namespace WebApi.Controllers
             var success = await _communicationTypeService.DeleteAsync(id);
             return success ? NoContent() : NotFound();
         }
-        [HttpGet("{typeCode}/statuses")]
+        
+        [HttpGet("{id}/statuses")]
         public async Task<ActionResult<List<CommunicationTypeStatusDto>>> GetStatusesForType(Guid id)
         {
+            
             var statuses = await _communicationTypeService.GetStatusesForTypeAsync(id);
             return Ok(statuses);
         }

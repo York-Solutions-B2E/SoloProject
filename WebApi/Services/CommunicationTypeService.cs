@@ -15,6 +15,7 @@ public class CommunicationTypeService : ICommunicationTypeService
     
     public async Task<List<CommunicationTypeStatusDto>> GetStatusesForTypeAsync(Guid id)
     {
+        
         var communicationType = await _db.CommunicationTypes
             .Include(ct => ct.Statuses)
             .FirstOrDefaultAsync(ct => ct.Id == id);
@@ -54,7 +55,7 @@ public class CommunicationTypeService : ICommunicationTypeService
         var communicationType = await _db.CommunicationTypes
             .Include(ct => ct.Statuses)
             .FirstOrDefaultAsync(ct => ct.Id == id);
-
+        
         if (communicationType == null) return false;
 
         // Remove old statuses
@@ -92,6 +93,7 @@ public class CommunicationTypeService : ICommunicationTypeService
 
     public async Task<CommunicationTypeDto?> CreateAsync(CommunicationTypeDto dto)
     {
+        
         var entity = new CommunicationType
         {
             Id = Guid.NewGuid(),
@@ -123,10 +125,19 @@ public class CommunicationTypeService : ICommunicationTypeService
         {
             
             entity.TypeCode = dto.TypeCode;
-            // No need to update Communications — they reference by CommunicationTypeId (surrogate key)
+            
         }
-
         entity.DisplayName = dto.DisplayName;
+        // not pretty but gets the job done
+        
+        var affectedCommunications = await _db.Communications
+            .Where(c => c.CommunicationTypeId == dto.Id)
+            .ToListAsync();
+
+        foreach (var comm in affectedCommunications)
+        {
+            comm.LastUpdatedUtc = DateTime.UtcNow;
+        }
 
         await _db.SaveChangesAsync();
         return true;

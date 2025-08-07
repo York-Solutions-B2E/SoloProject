@@ -21,12 +21,15 @@ namespace ServerApp.Services
 
         public async Task<bool> CreateAsync(CommunicationTypeDto dto)
         {
+            
+
             var response = await _http.PostAsJsonAsync("api/communicationtype", dto);
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> UpdateAsync(CommunicationTypeDto dto)
         {
+            
             var response = await _http.PutAsJsonAsync("api/communicationtype", dto);
             return response.IsSuccessStatusCode;
         }
@@ -38,7 +41,8 @@ namespace ServerApp.Services
         }
         
         public async Task<List<CommunicationTypeStatusDto>> GetStatusesForTypeAsync(Guid id)
-        {
+        {   
+            
             return await _http.GetFromJsonAsync<List<CommunicationTypeStatusDto>>($"api/communicationtype/{id}/statuses")
                 ?? new List<CommunicationTypeStatusDto>();
         }

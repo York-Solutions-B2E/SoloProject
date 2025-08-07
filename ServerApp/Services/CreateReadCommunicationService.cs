@@ -23,18 +23,19 @@ namespace ServerApp.Services
         var response = await _client.GetFromJsonAsync<List<CommunicationDto>>("api/communications/all");
         if (response == null)
             throw new Exception("Failed to retrieve communications from API.");
+            
         return response;
     }
     public async Task<PaginatedResult<CommunicationDto>> GetCommunicationsAsync(int pageNumber, int pageSize)
-        {
-            var response = await _client.GetFromJsonAsync<PaginatedResult<CommunicationDto>>(
-                $"api/communications?pageNumber={pageNumber}&pageSize={pageSize}");
+    {
+        var response = await _client.GetFromJsonAsync<PaginatedResult<CommunicationDto>>(
+            $"api/communications?pageNumber={pageNumber}&pageSize={pageSize}");
 
-            if (response == null)
-                throw new Exception("Failed to retrieve communications from API.");
+        if (response == null)
+            throw new Exception("Failed to retrieve communications from API.");
 
-            return response;
-        }
+        return response;
+    }
 
   }
 

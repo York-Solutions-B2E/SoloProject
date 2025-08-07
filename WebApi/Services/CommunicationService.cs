@@ -26,14 +26,10 @@ namespace WebApi.Services {
                 .Include(c => c.StatusHistory)
                 .FirstOrDefaultAsync(c => c.Id == communicationId);
 
-
-            Console.WriteLine($"History count for {communicationId}: {communication?.StatusHistory?.Count}");
-
-            
-            
-
             if (communication == null)
                 return null;
+            
+            //grab initial creation date
             
             return new CommunicationDetailsDto
             {
@@ -41,7 +37,8 @@ namespace WebApi.Services {
                 Title = communication.Title,
                 TypeCode = communication.CommunicationType.TypeCode,
                 CurrentStatusCode = communication.CurrentStatus,
-                CreatedAt = communication.LastUpdatedUtc,
+                LastUpdatedUtc = communication.LastUpdatedUtc,
+                CreatedAt = communication.CreatedAt,
                 SourceFileUrl = communication.SourceFileUrl,
                 StatusHistory = communication.StatusHistory.Select(sh => new CommunicationStatusHistoryDto
                 {
@@ -67,10 +64,23 @@ namespace WebApi.Services {
                 CommunicationTypeId = communicationType.Id,   // use surrogate key here
                 CurrentStatus = dto.InitialStatusCode,
                 LastUpdatedUtc = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow
+                
                 // Assign other properties as needed
             };
 
+            //start tracking status history
+            var historyEntry = new CommunicationStatusHistory
+            {
+                CommunicationId = entity.Id,
+                Communication = entity,
+                StatusCode = dto.InitialStatusCode,
+                OccurredUtc = DateTime.UtcNow
+            };
+
+
             _db.Communications.Add(entity);
+            _db.CommunicationStatusHistories.Add(historyEntry);
             await _db.SaveChangesAsync();
 
             return entity.Id;

@@ -46,6 +46,7 @@ namespace WebApi.Services
                 if (comm != null)
                 {
                     comm.CurrentStatus = evt.EventCode;
+                    comm.LastUpdatedUtc = DateTime.UtcNow;
                     db.CommunicationStatusHistories.Add(new CommunicationStatusHistory
                     {
                         

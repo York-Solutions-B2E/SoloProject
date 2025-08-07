@@ -7,14 +7,20 @@ using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//Start controllers
 builder.Services.AddControllers();
-// Add CORS policy
 
-//hook up to sqlserver
+
+//Hook up to sqlserver
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     
+
+    });
+    
+
+// Add CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", policy =>
@@ -24,10 +30,10 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+
 builder.Services.AddScoped<ICommunicationTypeService, CommunicationTypeService>();
 builder.Services.AddScoped<ICommunicationService, CommunicationService>();
 builder.Services.AddHostedService<CommunicationEventConsumer>();
-
 builder.Services.AddScoped<CommunicationEventPublisher>();
 
 builder.Services.AddAuthentication(options =>
@@ -46,23 +52,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SupportNonNullableReferenceTypes();
-});
 
 var app = builder.Build();
-app.UseSwagger();
-app.UseSwaggerUI();
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    
-}
+
 app.UseCors("AllowSpecificOrigins");
-//app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

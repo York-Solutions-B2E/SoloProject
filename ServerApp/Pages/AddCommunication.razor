@@ -25,10 +25,6 @@
         </InputSelect>
     </div>
 
-    <div class="mb-3">
-        <label for="initialStatusCode">Initial Status Code</label>
-        <InputText id="initialStatusCode" class="form-control" @bind-Value="newCommunication.InitialStatusCode" />
-    </div>
 
     <button type="submit" class="btn btn-primary" disabled="@isSubmitting">Add Communication</button>
 </EditForm>
@@ -48,7 +44,7 @@
     {
         Title = "",
         TypeCode = "",
-        InitialStatusCode = "" // or some default initial status code string
+        InitialStatusCode = "Created" // or some default initial status code string
     };
     private List<CommunicationTypeDto> communicationTypes = new();
     private bool isSubmitting = false;
@@ -78,7 +74,7 @@
             {
                 Title = "",
                 TypeCode = "",
-                InitialStatusCode = ""
+                InitialStatusCode = "Created"
             }; // reset form
             await OnCommunicationAdded.InvokeAsync();
         }

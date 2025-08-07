@@ -9,6 +9,8 @@ namespace App.Shared.Dtos
     public required string TypeCode { get; set; } 
     public string CurrentStatusCode { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
+    
+    public DateTime LastUpdatedUtc { get; set; }
     public string? SourceFileUrl { get; set; }
 
     public List<CommunicationStatusHistoryDto> StatusHistory { get; set; } = new();
