@@ -3,6 +3,7 @@
 @using global::App.Shared.Dtos
 @using ServerApp.Services
 @inject CRUDCommunicationTypeService TypeService
+
 @attribute [Authorize(Roles = "Admin")]
 
 <AuthorizeView Roles="Admin">

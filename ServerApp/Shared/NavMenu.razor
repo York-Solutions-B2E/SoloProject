@@ -17,29 +17,33 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            <NavLink class="nav-link" href="/communicationAdd">
+                <span class="oi oi-plus" aria-hidden="true"></span> Add communications
             </NavLink>
         </div>
         
-        <div class="sidebar">
-            <p>Hello, @context.User.Identity?.Name!</p>
-            <a class="nav-link" href="Account/SignOut">Logout</a>
-            </div>
-            </Authorized>
-            <NotAuthorized>
-        <div class="sidebar">
-            <p>You are not signed in</p>
-            <a class="nav-link" href="Account/SignIn">Login</a>
-            </div>
-            </NotAuthorized>
-            </AuthorizeView>  
-            </nav>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/admin/communication-types">
+                <span class="oi oi-plus" aria-hidden="true"></span> Add Comm. Types
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/eventSimulator">
+                <span class="oi oi-plus" aria-hidden="true"></span> Change Comm. Status
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/communications">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Communications List
+            </NavLink>
+        </div>
+        
+        </Authorized>
+        <NotAuthorized>
+       
+        </NotAuthorized>
+        </AuthorizeView>  
+        </nav>
         </div>
 @code {
     private bool collapseNavMenu = true;

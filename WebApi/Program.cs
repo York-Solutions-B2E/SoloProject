@@ -15,11 +15,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-    
 
     });
     
-
 // Add CORS policy
 builder.Services.AddCors(options =>
 {
@@ -33,8 +31,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<ICommunicationTypeService, CommunicationTypeService>();
 builder.Services.AddScoped<ICommunicationService, CommunicationService>();
-builder.Services.AddHostedService<CommunicationEventConsumer>();
 builder.Services.AddScoped<CommunicationEventPublisher>();
+
+builder.Services.AddHostedService<CommunicationEventConsumer>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -52,12 +51,14 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
 var app = builder.Build();
 
 app.UseCors("AllowSpecificOrigins");
+
 app.UseAuthentication();
+
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

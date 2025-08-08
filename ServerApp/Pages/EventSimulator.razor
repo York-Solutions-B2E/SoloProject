@@ -1,10 +1,12 @@
 @page "/eventSimulator"
 @using global::App.Shared.Dtos
-<button @onclick="PublishEvent">Publish Event</button>
+
 
 @page "/event-simulator"
 @inject HttpClient Http
 @inject ServerApp.Services.CreateReadCommunicationService CommunicationService
+
+@attribute [Authorize]
 
 <h3>Event Simulator</h3>
 

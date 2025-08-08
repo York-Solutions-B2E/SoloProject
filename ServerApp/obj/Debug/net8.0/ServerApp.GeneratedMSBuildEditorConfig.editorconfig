@@ -40,10 +40,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ29tbXVuaWNhdGlvblR5cGVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/yorkmacbook017/Desktop/SoloProject/ServerApp/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ291bnRlci5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [/Users/yorkmacbook017/Desktop/SoloProject/ServerApp/Pages/EventSimulator.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXZlbnRTaW11bGF0b3IucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -52,8 +48,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/yorkmacbook017/Desktop/SoloProject/ServerApp/Pages/LoginDisplay.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTG9naW5EaXNwbGF5LnJhem9y
+[/Users/yorkmacbook017/Desktop/SoloProject/ServerApp/Shared/LoginDisplay.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL0xvZ2luRGlzcGxheS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/yorkmacbook017/Desktop/SoloProject/ServerApp/Shared/SurveyPrompt.razor]
