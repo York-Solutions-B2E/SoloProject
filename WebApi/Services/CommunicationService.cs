@@ -143,7 +143,10 @@ namespace WebApi.Services {
                     Title = c.Title,
                     TypeCode = c.CommunicationType.TypeCode,
                     CurrentStatus = c.CurrentStatus,
-                    LastUpdatedUtc = c.LastUpdatedUtc
+                    LastUpdatedUtc = c.LastUpdatedUtc,
+                    AllowedStatusCodes = c.CommunicationType.Statuses
+                        .Select(s => s.StatusCode)
+                        .ToList()
                 })
                 .ToListAsync();
         }
