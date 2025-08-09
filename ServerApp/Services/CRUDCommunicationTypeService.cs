@@ -40,9 +40,10 @@ namespace ServerApp.Services
             return response.IsSuccessStatusCode;
         }
         
+        //For statuses
         public async Task<List<CommunicationTypeStatusDto>> GetStatusesForTypeAsync(Guid id)
-        {   
-            
+        {
+
             return await _http.GetFromJsonAsync<List<CommunicationTypeStatusDto>>($"api/communicationtype/{id}/statuses")
                 ?? new List<CommunicationTypeStatusDto>();
         }

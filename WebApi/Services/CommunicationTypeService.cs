@@ -31,9 +31,6 @@ public class CommunicationTypeService : ICommunicationTypeService
             })
             .ToListAsync();
 
-        
-
-
         if (communicationType != null)
         {
             foreach (var dto in allGlobalStatuses)

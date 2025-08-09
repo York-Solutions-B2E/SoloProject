@@ -35,7 +35,7 @@ namespace WebApi.Services
         consumer.ReceivedAsync += async (sender, ea) =>
         {
             var json = Encoding.UTF8.GetString(ea.Body.ToArray());
-            var evt = JsonSerializer.Deserialize<CommunicationEventDto>(json);
+            var evt = JsonSerializer.Deserialize<CommunicationEventDto>(json); //deserialize DTO to be updated
 
             if (evt != null)
             {
@@ -47,7 +47,7 @@ namespace WebApi.Services
                 {
                     comm.CurrentStatus = evt.EventCode;
                     comm.LastUpdatedUtc = DateTime.UtcNow;
-                    db.CommunicationStatusHistories.Add(new CommunicationStatusHistory
+                    db.CommunicationStatusHistories.Add(new CommunicationStatusHistory //Add new history in list of histories
                     {
                         
                         Communication = comm,
@@ -59,7 +59,7 @@ namespace WebApi.Services
                 }
             }
 
-            await channel.BasicAckAsync(ea.DeliveryTag, false);
+            await channel.BasicAckAsync(ea.DeliveryTag, false); //Acknowledge message to be consumed
         };
 
         await channel.BasicConsumeAsync("communication_events", false, consumer, cancellationToken: stoppingToken);

@@ -29,7 +29,7 @@ namespace WebApi.Services {
             if (communication == null)
                 return null;
             
-            //grab initial creation date
+            
             
             return new CommunicationDetailsDto
             {
@@ -38,9 +38,9 @@ namespace WebApi.Services {
                 TypeCode = communication.CommunicationType.TypeCode,
                 CurrentStatusCode = communication.CurrentStatus,
                 LastUpdatedUtc = communication.LastUpdatedUtc,
-                CreatedAt = communication.CreatedAt,
+                CreatedAt = communication.CreatedAt, //grab initial creation date
                 SourceFileUrl = communication.SourceFileUrl,
-                StatusHistory = communication.StatusHistory.Select(sh => new CommunicationStatusHistoryDto
+                StatusHistory = communication.StatusHistory.Select(sh => new CommunicationStatusHistoryDto //Create history of Comms
                 {
                     StatusCode = sh.StatusCode,
                     OccurredUtc = sh.OccurredUtc
@@ -50,8 +50,8 @@ namespace WebApi.Services {
 
         public async Task<Guid> CreateCommunicationAsync(CreateCommunicationDto dto)
         {
-            // Find the CommunicationType entity by TypeCode
-            var communicationType = await _db.CommunicationTypes
+            
+            var communicationType = await _db.CommunicationTypes // Find the CommunicationType entity by TypeCode
                 .FirstOrDefaultAsync(ct => ct.TypeCode == dto.TypeCode);
 
             if (communicationType == null)
@@ -61,16 +61,15 @@ namespace WebApi.Services {
             {
                 Id = Guid.NewGuid(),
                 Title = dto.Title,
-                CommunicationTypeId = communicationType.Id,   // use surrogate key here
+                CommunicationTypeId = communicationType.Id, // use surrogate key here
                 CurrentStatus = dto.InitialStatusCode,
                 LastUpdatedUtc = DateTime.UtcNow,
                 CreatedAt = DateTime.UtcNow
                 
-                // Assign other properties as needed
             };
 
-            //start tracking status history
-            var historyEntry = new CommunicationStatusHistory
+            
+            var historyEntry = new CommunicationStatusHistory //start tracking status history
             {
                 CommunicationId = entity.Id,
                 Communication = entity,
@@ -86,7 +85,10 @@ namespace WebApi.Services {
             return entity.Id;
         }
 
-
+        /* Assign a number of communications for each page based on page size
+           Skip over values if pageNumber is over 1 to display next page Comms.
+           Lastly Provide total number of elements to keep pageSize Dynamic.
+        */
         public async Task<PaginatedResult<CommunicationDto>> GetPaginatedCommunicationsAsync(int pageNumber, int pageSize)
         {
             var query = _db.Communications
@@ -123,9 +125,9 @@ namespace WebApi.Services {
             var entity = await _db.Communications
                 .Include(c => c.CommunicationType)
                 .FirstOrDefaultAsync(c => c.Id == id);
-                
-            //return if null otherwise return new DTO
-            return entity == null ? null : new CommunicationDto
+
+            
+            return entity == null ? null : new CommunicationDto //return if null otherwise return new DTO
             {
                 Id = entity.Id,
                 Title = entity.Title,
@@ -135,9 +137,10 @@ namespace WebApi.Services {
             };
         }
 
+        
         public async Task<List<CommunicationDto>> GetAllAsync()
         {
-            return await _db.Communications
+            return await _db.Communications //return all existing Communications
                 .Select(c => new CommunicationDto
                 {
                     Id = c.Id,

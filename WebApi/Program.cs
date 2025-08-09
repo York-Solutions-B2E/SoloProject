@@ -18,7 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
     });
     
-// Add CORS policy
+// Add CORS policy to allow communication between API/Server
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", policy =>

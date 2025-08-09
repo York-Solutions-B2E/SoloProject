@@ -26,8 +26,8 @@ public class CommunicationEventPublisher
 
         var message = JsonSerializer.Serialize(evt);
         var body = Encoding.UTF8.GetBytes(message);
-
-        await channel.BasicPublishAsync(
+        
+        await channel.BasicPublishAsync( //publish message to be consumed
             exchange: string.Empty,
             routingKey: _queueName,
             mandatory: true,
