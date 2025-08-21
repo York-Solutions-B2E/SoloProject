@@ -43,6 +43,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "HotChocolate": {
+              "target": "Package",
+              "version": "[15.1.8, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -107,9 +113,45 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "ChilliCream.Nitro": {
+              "target": "Package",
+              "version": "[15.0.0, )"
+            },
+            "GraphQL": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
+            "HotChocolate": {
+              "target": "Package",
+              "version": "[15.1.8, )"
+            },
+            "HotChocolate.AspNetCore": {
+              "target": "Package",
+              "version": "[15.1.8, )"
+            },
+            "HotChocolate.AspNetCore.Authorization": {
+              "target": "Package",
+              "version": "[15.1.8, )"
+            },
+            "HotChocolate.Data": {
+              "target": "Package",
+              "version": "[15.1.8, )"
+            },
+            "HotChocolate.Data.EntityFramework": {
+              "target": "Package",
+              "version": "[15.1.8, )"
+            },
+            "HotChocolate.Subscriptions": {
+              "target": "Package",
+              "version": "[15.1.8, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.7, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Testing": {
+              "target": "Package",
+              "version": "[8.0.12, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
@@ -121,9 +163,17 @@
               "target": "Package",
               "version": "[8.0.7, )"
             },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[8.0.7, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.14.1, )"
             },
             "RabbitMQ.Client": {
               "target": "Package",
@@ -132,6 +182,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[9.0.3, )"
+            },
+            "System.Net.Http.Json": {
+              "target": "Package",
+              "version": "[9.0.8, )"
             }
           },
           "imports": [

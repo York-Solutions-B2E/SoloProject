@@ -1,6 +1,7 @@
 /Users/yorkmacbook017/Desktop/SoloProject/App.Shared/bin/Debug/net8.0/App.Shared.deps.json
 /Users/yorkmacbook017/Desktop/SoloProject/App.Shared/bin/Debug/net8.0/App.Shared.dll
 /Users/yorkmacbook017/Desktop/SoloProject/App.Shared/bin/Debug/net8.0/App.Shared.pdb
+/Users/yorkmacbook017/Desktop/SoloProject/App.Shared/obj/Debug/net8.0/App.Shared.csproj.AssemblyReference.cache
 /Users/yorkmacbook017/Desktop/SoloProject/App.Shared/obj/Debug/net8.0/App.Shared.GeneratedMSBuildEditorConfig.editorconfig
 /Users/yorkmacbook017/Desktop/SoloProject/App.Shared/obj/Debug/net8.0/App.Shared.AssemblyInfoInputs.cache
 /Users/yorkmacbook017/Desktop/SoloProject/App.Shared/obj/Debug/net8.0/App.Shared.AssemblyInfo.cs

@@ -1,5 +1,8 @@
+using WebApi.CommunicationDbContext;
+
 namespace WebApi.Entities
 {
+    [Node]
     public class Communication
     {
         public Guid Id { get; set; } // PK
@@ -11,5 +14,13 @@ namespace WebApi.Entities
         public string? SourceFileUrl { get; set; }
         public CommunicationType? CommunicationType { get; set; }
         public List<CommunicationStatusHistory> StatusHistory { get; set; } = new List<CommunicationStatusHistory>();
+
+        [NodeResolver]
+        public static  Communication GetCommunicationAsync(Guid id, [Service] AppDbContext db)
+        {
+        return db.Communications.First(c => c.Id == id);
+        }
+
+        
     }
 }

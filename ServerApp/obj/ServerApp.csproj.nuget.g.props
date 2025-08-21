@@ -12,4 +12,10 @@
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="/Users/yorkmacbook017/.nuget/packages/" />
   </ItemGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)strawberryshake.blazor/15.1.8/build/StrawberryShake.Blazor.props" Condition="Exists('$(NuGetPackageRoot)strawberryshake.blazor/15.1.8/build/StrawberryShake.Blazor.props')" />
+  </ImportGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgStrawberryShake_Blazor Condition=" '$(PkgStrawberryShake_Blazor)' == '' ">/Users/yorkmacbook017/.nuget/packages/strawberryshake.blazor/15.1.8</PkgStrawberryShake_Blazor>
+  </PropertyGroup>
 </Project>

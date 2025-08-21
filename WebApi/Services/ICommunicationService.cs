@@ -4,7 +4,7 @@ namespace WebApi.Services
     public interface ICommunicationService
     {
         Task<Guid> CreateCommunicationAsync(CreateCommunicationDto dto);
-        Task<PaginatedResult<CommunicationDto>> GetPaginatedCommunicationsAsync(int pageNumber, int pageSize);
+        IQueryable<CommunicationDto> GetPaginatedCommunicationsAsync();
         Task<CommunicationDetailsDto?> GetCommunicationDetailsAsync(Guid communicationId);
         Task<CommunicationDto?> GetCommunicationAsync(Guid id);
         Task<List<CommunicationDto>> GetAllAsync();

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Okta.AspNetCore;
 using ServerApp.Services;
+using ServerApp;
+
 
 
 
@@ -12,7 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-
+// Register StrawberryShake client
+builder.Services
+    .AddServerAppClient()
+    .ConfigureHttpClient(client =>
+    {
+        client.BaseAddress = new Uri("http://webapi/graphql");
+    });
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -49,6 +57,7 @@ builder.Services.Configure<OpenIdConnectOptions>(OktaDefaults.MvcAuthenticationS
 builder.Services.AddHttpClient("ApiClient", client =>
 {
     //Docker Compose name
+    
     client.BaseAddress = new Uri("http://webapi");
 })
 .AddHttpMessageHandler<AccessTokenService>();

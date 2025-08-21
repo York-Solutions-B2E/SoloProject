@@ -1,0 +1,18 @@
+query Communications($pageSize: Int!, $after: String) {
+  communications(first: $pageSize, after: $after) {
+    edges {
+      cursor
+      node {
+        id
+        typeCode
+        title
+        currentStatus
+        lastUpdatedUtc
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

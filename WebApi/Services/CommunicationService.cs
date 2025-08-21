@@ -18,8 +18,8 @@ namespace WebApi.Services
         public Task<Guid> CreateCommunicationAsync(CreateCommunicationDto dto)
             => _repo.CreateCommunicationAsync(dto);
 
-        public Task<PaginatedResult<CommunicationDto>> GetPaginatedCommunicationsAsync(int pageNumber, int pageSize)
-            => _repo.GetPaginatedCommunicationsAsync(pageNumber, pageSize);
+        public IQueryable<CommunicationDto> GetPaginatedCommunicationsAsync()
+            => _repo.GetPaginatedCommunicationsAsync();
 
         public Task<CommunicationDto?> GetCommunicationAsync(Guid id)
             => _repo.GetCommunicationAsync(id);

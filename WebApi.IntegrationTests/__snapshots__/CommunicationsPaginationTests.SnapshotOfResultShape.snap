@@ -1,0 +1,26 @@
+{
+  "data": {
+    "communications": {
+      "edges": [
+        {
+          "cursor": "MA==",
+          "node": {
+            "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+            "title": "Comm1"
+          }
+        },
+        {
+          "cursor": "MQ==",
+          "node": {
+            "id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+            "title": "Comm2"
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "MQ=="
+      }
+    }
+  }
+}
