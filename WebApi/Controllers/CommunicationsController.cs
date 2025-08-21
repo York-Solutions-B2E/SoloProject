@@ -30,11 +30,11 @@ namespace WebApi.Controllers
 
         //getall paginated
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CommunicationDto>>> GetAll([FromQuery] int pageNumber = 1, 
+        public IQueryable<CommunicationDto> GetAll([FromQuery] int pageNumber = 1, 
         [FromQuery] int pageSize = 10)
         {
-            var comms = await _communicationService.GetPaginatedCommunicationsAsync(pageNumber, pageSize);
-            return Ok(comms);
+            var comms = _communicationService.GetPaginatedCommunicationsAsync();
+            return (IQueryable<CommunicationDto>)Ok(comms);
         }
 
         //getall non paginated

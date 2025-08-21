@@ -89,33 +89,19 @@ namespace WebApi.Services {
            Skip over values if pageNumber is over 1 to display next page Comms.
            Lastly Provide total number of elements to keep pageSize Dynamic.
         */
-        public async Task<PaginatedResult<CommunicationDto>> GetPaginatedCommunicationsAsync(int pageNumber, int pageSize)
+        public IQueryable<CommunicationDto> GetPaginatedCommunicationsAsync()
         {
-            var query = _db.Communications
-                .OrderByDescending(c => c.LastUpdatedUtc); // sort as needed
-
-            var totalCount = await query.CountAsync();
-
-            var items = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .Select(c => new CommunicationDto
-                {
-                    Id = c.Id,
-                    Title = c.Title,
-                    TypeCode = c.CommunicationType.TypeCode,
-                    CurrentStatus = c.CurrentStatus,
-                    LastUpdatedUtc = c.LastUpdatedUtc
-                })
-                .ToListAsync();
-
-            return new PaginatedResult<CommunicationDto>
-            {
-                Items = items,
-                TotalCount = totalCount,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
+            return _db.Communications
+        .OrderBy(c => c.LastUpdatedUtc)
+        .Select(c => new CommunicationDto
+        {
+            Id = c.Id,
+            Title = c.Title,
+            TypeCode = c.CommunicationType.TypeCode,
+            CurrentStatus = c.CurrentStatus,
+            LastUpdatedUtc = c.LastUpdatedUtc
+        });
+        
         }
 
 
